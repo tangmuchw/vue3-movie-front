@@ -1,0 +1,32 @@
+/* 防止用户自定义背景颜色对网页的影响，添加让用户可以自定义字体 */
+html {
+    background: #fff;
+}
+
+/* 设置字体 */
+body {
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+}
+
+html,body{
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+ul,li{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+/*解决在X5新内核Blink中，在排版页面的时候，会主动对字体进行放大*/
+*, *:before, *:after {
+    /*max-height: 100000px;*/
+}
+#app{
+    width:100%;
+    height:100%;
+}
