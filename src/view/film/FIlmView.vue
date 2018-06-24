@@ -49,8 +49,8 @@
     },
     computed: {},
     mounted() {
+      this.$store.commit(types.CLEAR_NEEDLESS_INFO)
       this.getFilmList()
-
       let cinemaId = CinemaParam.cinemaId
       // let cinemaName = CinemaPara.cinemaName
       this.$api.getCinemaDetail(cinemaId).then(res => {
@@ -74,8 +74,6 @@
       }).catch(error => {
         console.log(error)
       })
-
-
     },
     methods: {
       wrapperFilmPoster(postUrl) {

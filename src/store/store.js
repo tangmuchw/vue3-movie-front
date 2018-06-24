@@ -215,7 +215,6 @@ export default new Vuex.Store({
       state.planInfo = null
       state.orderCode = null
       state.selectedSeats = []
-      state.selectedMembershipCard = null
     },
     // 确认订单--只获得一次余额最大的会员卡
     [types.SET_MEMBERSHIP_CARD_MAX_BALANCE_TIMES]: (state, membershipCardMaxBalanceTimes) => {

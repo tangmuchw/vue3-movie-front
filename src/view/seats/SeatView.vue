@@ -260,8 +260,8 @@
       },
       getSeatsMap() {
         let screenId = this.planInfo.screenId
-        let scheduleId = this.planInfo.id
-        this.$api.getSeatsMap(screenId,scheduleId).then(res => {
+        let startDate = this.planInfo.startDate
+        this.$api.getSeatsMap(screenId,startDate).then(res => {
           let data = res.data
           if (res.status == 200) {
             this.seatsItem = data

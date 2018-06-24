@@ -101,7 +101,7 @@
         timesList: '',
         slideActiveIndex: 0,
         touchStartIndex: '',
-        planDateSelected: ''
+        planDateSelected: '',
       }
     },
     components: {
@@ -110,7 +110,8 @@
     },
     computed: {
       ...mapGetters({
-        filmInfo: 'getFilmInfo'
+        filmInfo: 'getFilmInfo',
+        planInfo: 'getPlanInfo'
       })
     },
     mounted() {
@@ -125,8 +126,13 @@
         // let filmId = this.filmInfoForSeat == null ? '' : this.filmInfoForSeat.id
         this.getTimeList(planDate)
         this.slideActiveIndex = index
-        let planDateChanged = planValue
-        this.planDateSelected = planDateChanged
+        let planValueChanged = planValue
+        let planDateChanged = planDate
+        let date = {}
+        date.planDate = planDateChanged
+        date.planValue = planValueChanged
+        date.planActiveIndex = index
+        this.planDateSelected = date
       },
       touchstartChange(index) {
         this.touchStartIndex = index
@@ -138,13 +144,10 @@
         return (new Date(plan.startTime).getTime() - new Date().getTime()) < (15 * 60 * 1000)
       },
       purchase(plan) {
-        // if (this.isPlanExpired(plan)) {
-        //   this.$dialog.alert({
-        //     message: '请于开场前15分钟购票'
-        //   })
-        //   return
-        // }
-        let planDate = this.planDateSelected
+        let planDateSelected = this.planDateSelected
+        let planDateChange = planDateSelected.planDate
+        let planValueChange = planDateSelected.planValue
+        let planActiveIndex = planDateSelected.planActiveIndex
         let screenNameSelected = plan.screenName
         let screenIdSelected = plan.screenId
         let screenMongoId = plan.screenMongoId
@@ -154,11 +157,13 @@
         this.$store.commit(types.SET_PLAN_INFO, {
           id: plan.scheduleId,
           startTime: startTime,
-          detailDate: planDate,
+          detailDate: planValueChange,
+          startDate: planDateChange,
           screenName: screenNameSelected,
           screenId: screenIdSelected,
           screenMongoId: screenMongoId,
-          price: price
+          price: price,
+          planActiveIndex: planActiveIndex
         })
         this.$router.push({
           name: 'SeatView'
@@ -172,7 +177,18 @@
           if (res.status == 200) {
             if (data.length != 0) {
               _this.dateList = disposePlanDate(data)
-              _this.planDateSelected = _this.dateList[0].value
+              let date = {}
+              let planInfo = _this.planInfo
+              if (planInfo != null) {
+                let planDateKey = planInfo.planActiveIndex
+                _this.slideActiveIndex = planDateKey
+                date.planDate = _this.dateList[planDateKey].key
+                date.planValue = _this.dateList[planDateKey].value
+              } else {
+                date.planDate = _this.dateList[0].key
+                date.planValue = _this.dateList[0].value
+              }
+              _this.planDateSelected = date
               // _this.timesList = timeListMockData
               _this.getTimeList(_this.dateList[0].key)
             }
@@ -190,7 +206,7 @@
       getTimeList(showDate) {
         let _this = this
         let filmId = this.filmInfo.id
-        this.$api.getTimeList(showDate,filmId).then(res => {
+        this.$api.getTimeList(showDate, filmId).then(res => {
           let data = res.data
           if (res.status == 200) {
             _this.timesList = data

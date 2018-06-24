@@ -89,6 +89,7 @@ import md5 from 'js-md5'
             let accountId = _this.ruleForm.phone
             let password = _this.ruleForm.password
             let md5Pwd = md5(password)
+            // console.log(md5Pwd)
             if (checkMobile(accountId)) {
               _this.$api.login(accountId, md5Pwd).then(res => {
                 let data = res.data

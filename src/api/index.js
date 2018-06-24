@@ -54,11 +54,10 @@ class Api {
     })
   }
 
-
-  getSeatsMap(screenId,scheduleId) {
+  getSeatsMap(screenId,startTime) {
     return MovieServer.post(context.MOVIE_API.GET_SEATS_MAP, {
       screenId: screenId,
-      scheduleId:scheduleId
+      startTime:startTime
     })
   }
 
